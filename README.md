@@ -38,6 +38,11 @@ npm run start:dev
 npm run start:prod
 ```
 
+It's possible to run on docker.
+```bash
+docker-compose up -d
+```
+
 ## Test
 
 ```bash
