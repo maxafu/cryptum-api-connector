@@ -5,6 +5,9 @@
   "author": "Blockforce",
   "private": true,
   "license": "MIT",
+  "engines": {
+    "node": "^14.18.0"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
