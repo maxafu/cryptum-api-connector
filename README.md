@@ -28,17 +28,15 @@ npm install
 Run the command
 
 ```bash
-# development
-npm run start
-
 # watch mode
 npm run start:dev
 
 # production mode
-npm run start:prod
+npm run build && npm run start
 ```
 
 It's possible to run on docker.
+
 ```bash
 docker-compose up -d
 ```

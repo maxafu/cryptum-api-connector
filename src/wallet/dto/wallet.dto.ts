@@ -1,6 +1,6 @@
-import { Protocol } from './protocols.interface';
+import { Protocol } from 'src/cryptum/interfaces/protocols.interface';
 
-export interface Wallet {
+export class Wallet {
   xpub?: string;
   privateKey: string;
   publicKey?: string;
