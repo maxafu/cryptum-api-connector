@@ -1,3 +1,4 @@
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -13,6 +14,16 @@ async function bootstrap() {
       logger: true,
     }),
   );
+  app.useGlobalPipes(
+    new ValidationPipe({
+      stopAtFirstError: true,
+    }),
+  );
+  app.enableVersioning({
+    type: VersioningType.URI,
+    prefix: 'v1',
+  });
+
   const port = config().port;
   await app.listen(port, '0.0.0.0');
 }
