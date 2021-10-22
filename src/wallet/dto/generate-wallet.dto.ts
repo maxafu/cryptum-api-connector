@@ -7,6 +7,12 @@ import {
 } from 'class-validator';
 import { Protocol } from '../../cryptum/interfaces/protocols.interface';
 
+interface Derivation {
+  account?: number;
+  change?: number;
+  address?: number;
+}
+
 export class GenerateWalletDto {
   @IsEnum(Protocol)
   protocol: Protocol;
@@ -21,9 +27,5 @@ export class GenerateWalletDto {
 
   @IsOptional()
   @IsObject()
-  derivation: {
-    account: number;
-    change: number;
-    address: number;
-  };
+  derivation: Derivation;
 }
