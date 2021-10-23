@@ -1,3 +1,7 @@
+export class TransactionResponse {
+  hash: string;
+}
+
 export class Transaction {}
 
 export class UTXO {
