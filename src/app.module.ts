@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WalletController } from './wallet/wallet.controller';
 import { CryptumService } from './cryptum/cryptum.service';
+import { TransactionController } from './transaction/transaction.controller';
 import config from './config';
 
 const { ENV } = process.env;
@@ -16,7 +17,7 @@ const { ENV } = process.env;
       load: [config],
     }),
   ],
-  controllers: [AppController, WalletController],
+  controllers: [AppController, WalletController, TransactionController],
   providers: [AppService, CryptumService],
 })
 export class AppModule {}
