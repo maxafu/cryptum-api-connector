@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { CryptumService } from 'src/cryptum/cryptum.service';
+import { CryptumService } from '../cryptum/cryptum.service';
 
 @Controller('prices')
 export class PricesController {

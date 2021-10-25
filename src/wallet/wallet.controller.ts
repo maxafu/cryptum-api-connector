@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
-import { CryptumService } from 'src/cryptum/cryptum.service';
+import { CryptumService } from '../cryptum/cryptum.service';
 import { GenerateWalletDto } from './dto/generate-wallet.dto';
 import {
   GetWalletInfoDto,

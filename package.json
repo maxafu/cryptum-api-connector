@@ -1,8 +1,8 @@
 {
-  "name": "cryptum-api-layer",
+  "name": "cryptum-api-connector",
   "version": "0.0.1",
-  "title": "Cryptum API Layer",
-  "description": "Cryptum API Layer",
+  "title": "Cryptum API Connector",
+  "description": "Cryptum API Connector",
   "author": "Blockforce",
   "private": true,
   "license": "MIT",

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
-import { Protocol } from 'src/cryptum/interfaces/protocols.interface';
+import { Protocol } from '../../cryptum/interfaces/protocols.interface';
 
 export class Block {}
 

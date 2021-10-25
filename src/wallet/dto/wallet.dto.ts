@@ -1,4 +1,4 @@
-import { Protocol } from 'src/cryptum/interfaces/protocols.interface';
+import { Protocol } from '../../cryptum/interfaces/protocols.interface';
 
 export class Wallet {
   xpub?: string;

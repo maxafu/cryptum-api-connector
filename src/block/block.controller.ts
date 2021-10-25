@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { CryptumService } from 'src/cryptum/cryptum.service';
-import { Protocol } from 'src/cryptum/interfaces/protocols.interface';
+import { CryptumService } from '../cryptum/cryptum.service';
+import { Protocol } from '../cryptum/interfaces/protocols.interface';
 import { GetBlockDto } from './dto/get-block.dto';
 
 @Controller('block')

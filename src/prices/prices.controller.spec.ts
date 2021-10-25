@@ -1,4 +1,6 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CryptumService } from '../cryptum/cryptum.service';
 import { PricesController } from './prices.controller';
 
 describe('PricesController', () => {
@@ -7,6 +9,7 @@ describe('PricesController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PricesController],
+      providers: [CryptumService, ConfigService],
     }).compile();
 
     controller = module.get<PricesController>(PricesController);

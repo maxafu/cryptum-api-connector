@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { CryptumService } from 'src/cryptum/cryptum.service';
-import { Protocol } from 'src/cryptum/interfaces/protocols.interface';
+import { CryptumService } from '../cryptum/cryptum.service';
+import { Protocol } from '../cryptum/interfaces/protocols.interface';
 import { GetTransactionByHashDto } from './dto/get-transaction.dto';
 import { GetUtxosDto } from './dto/get-utxo.dto';
 import {

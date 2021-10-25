@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { WalletController } from './wallet/wallet.controller';
 import { CryptumService } from './cryptum/cryptum.service';
 import { TransactionController } from './transaction/transaction.controller';
@@ -19,7 +18,13 @@ const { ENV } = process.env;
       load: [config],
     }),
   ],
-  controllers: [AppController, WalletController, TransactionController, PricesController, BlockController],
-  providers: [AppService, CryptumService],
+  controllers: [
+    AppController,
+    WalletController,
+    TransactionController,
+    PricesController,
+    BlockController,
+  ],
+  providers: [CryptumService],
 })
 export class AppModule {}

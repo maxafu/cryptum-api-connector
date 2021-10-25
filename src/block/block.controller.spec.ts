@@ -1,4 +1,6 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { CryptumService } from '../cryptum/cryptum.service';
 import { BlockController } from './block.controller';
 
 describe('BlockController', () => {
@@ -7,6 +9,7 @@ describe('BlockController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [BlockController],
+      providers: [CryptumService, ConfigService],
     }).compile();
 
     controller = module.get<BlockController>(BlockController);
