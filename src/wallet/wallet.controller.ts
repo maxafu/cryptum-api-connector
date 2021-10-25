@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CryptumService } from '../cryptum/cryptum.service';
 import { GenerateWalletDto } from './dto/generate-wallet.dto';
 import {
@@ -9,6 +9,7 @@ import {
 import { WalletInfo } from './dto/wallet-info.dto';
 import { Wallet } from './dto/wallet.dto';
 
+@ApiTags('wallet')
 @Controller('wallet')
 export class WalletController {
   constructor(private cryptumService: CryptumService) {}

@@ -1,9 +1,9 @@
 version: "3.7"
 
 services:
-  cryptum-api-layer:
+  cryptum-api-connector:
     build: .
-    container_name: cryptum-api-layer
+    container_name: cryptum-api-connector
     restart: unless-stopped
     ports:
       - 8080:8080

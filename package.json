@@ -34,6 +34,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "cryptum-sdk": "^0.0.14",
+    "fastify": "^3.22.1",
     "fastify-swagger": "^4.12.5",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",

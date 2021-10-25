@@ -1,4 +1,4 @@
-import { ValidationPipe, VersioningType } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -8,6 +8,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import config from './config';
 import packageJson = require('../package.json');
+import { CryptumExceptionFilter } from './filters/cryptum-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -21,10 +22,7 @@ async function bootstrap() {
       stopAtFirstError: true,
     }),
   );
-  app.enableVersioning({
-    type: VersioningType.URI,
-    prefix: 'v1',
-  });
+  app.useGlobalFilters(new CryptumExceptionFilter());
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle(packageJson.title)

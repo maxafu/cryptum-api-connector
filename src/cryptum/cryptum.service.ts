@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as CryptumSdk from 'cryptum-sdk';
 import { Block, GetBlockDto } from '../block/dto/get-block.dto';
@@ -15,6 +15,8 @@ import { GetWalletInfoDto } from '../wallet/dto/get-wallet-info.dto';
 import { WalletInfo } from '../wallet/dto/wallet-info.dto';
 import { Wallet } from '../wallet/dto/wallet.dto';
 import { GenerateWalletDto } from '../wallet/dto/generate-wallet.dto';
+import { CreateTrustlineTransactionDto } from '../transaction/dto/create-transaction.dto';
+import { TrustlineProtocol } from './interfaces/protocols.interface';
 
 @Injectable()
 export class CryptumService {
@@ -50,5 +52,28 @@ export class CryptumService {
   }
   async getPrices(asset: string): Promise<Prices> {
     return this.sdk.getPricesController().getPrices(asset);
+  }
+  async createTrustlineTransaction(input: CreateTrustlineTransactionDto) {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { protocol, privateKey, assetSymbol, issuer, limit, memo } = input;
+    switch (protocol) {
+      case TrustlineProtocol.STELLAR:
+      case TrustlineProtocol.RIPPLE: {
+        const wallet = await walletController.generateWalletFromPrivateKey({
+          protocol,
+          privateKey,
+        });
+        return txController.createStellarTrustlineTransaction({
+          wallet,
+          assetSymbol,
+          issuer,
+          limit,
+          memo,
+        });
+      }
+      default:
+        throw new BadRequestException('Unsupported protocol');
+    }
   }
 }
