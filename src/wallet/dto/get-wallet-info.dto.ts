@@ -1,33 +1,31 @@
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum } from 'class-validator';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Protocol } from '../../cryptum/interfaces/protocols.interface';
+import { Transform } from 'class-transformer';
 
 export class GetWalletInfoQueryStringDto {
   @ApiProperty()
   @IsEnum(Protocol)
   protocol: Protocol;
 
-  @ApiProperty()
-  @IsArray()
-  @IsOptional()
-  tokenAddresses?: string[];
+  @ApiProperty({
+    isArray: true,
+    default: [],
+  })
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return [value];
+    }
+    return value;
+  })
+  tokenAddresses?: string[] = [];
 }
 
-export class GetWalletInfoDto {
-  @ApiProperty()
-  @IsEnum(Protocol)
-  protocol: Protocol;
-
-  @ApiProperty()
-  @IsString()
+export class GetWalletInfoDto extends PartialType(GetWalletInfoQueryStringDto) {
   address: string;
 
-  @ApiProperty()
-  @IsArray()
-  @IsOptional()
-  tokenAddresses?: string[];
-
-  constructor(address: string, protocol: Protocol, tokenAddresses = null) {
+  constructor(address: string, protocol: Protocol, tokenAddresses = []) {
+    super();
     this.address = address;
     this.protocol = protocol;
     this.tokenAddresses = tokenAddresses;

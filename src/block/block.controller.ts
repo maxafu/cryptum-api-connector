@@ -8,10 +8,7 @@ export class BlockController {
   constructor(private cryptumService: CryptumService) {}
 
   @Get(':block')
-  getBlock(
-    @Param('block') block: string,
-    @Query('protocol') protocol: Protocol,
-  ) {
+  getBlock(@Param('block') block: string, @Query('protocol') protocol: Protocol) {
     return this.cryptumService.getBlock(new GetBlockDto(block, protocol));
   }
 }

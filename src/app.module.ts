@@ -18,13 +18,7 @@ const { ENV } = process.env;
       load: [config],
     }),
   ],
-  controllers: [
-    AppController,
-    WalletController,
-    TransactionController,
-    PricesController,
-    BlockController,
-  ],
+  controllers: [AppController, WalletController, TransactionController, PricesController, BlockController],
   providers: [CryptumService],
 })
 export class AppModule {}
