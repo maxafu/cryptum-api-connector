@@ -14,6 +14,7 @@ import {
 import { GetTransactionByHashDto } from './dto/get-transaction.dto';
 import { GetUtxosDto } from './dto/get-utxo.dto';
 import { SendTransactionDto } from './dto/send-transaction.dto';
+import { CallSmartContractDto, CreateSmartContractCallTransactionDto } from './dto/smartcontract-transaction.dto';
 
 @ApiTags('transaction')
 @ApiExtraModels(CreateRippleTransferTransactionDto, CreateStellarTransferTransactionDto)
@@ -65,5 +66,13 @@ export class TransactionController {
   @Post('transfer/hathor')
   createHathorTransferTransaction(@Body() body: CreateHathorTransferTransactionDto) {
     return this.cryptumService.createHathorTransferTransaction(body);
+  }
+  @Post('smartcontract/call')
+  callSmartContractMethod(@Body() body: CallSmartContractDto) {
+    return this.cryptumService.callSmartContractMethod(body);
+  }
+  @Post('smartcontract/send')
+  createSmartContractCallTransaction(@Body() body: CreateSmartContractCallTransactionDto) {
+    return this.cryptumService.createSmartContractCallTransaction(body);
   }
 }

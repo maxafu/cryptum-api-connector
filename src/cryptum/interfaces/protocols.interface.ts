@@ -13,3 +13,9 @@ export enum TrustlineProtocol {
   STELLAR = 'STELLAR',
   RIPPLE = 'RIPPLE',
 }
+
+export enum EthProtocol {
+  ETHEREUM = 'ETHEREUM',
+  CELO = 'CELO',
+  BSC = 'BSC',
+}
