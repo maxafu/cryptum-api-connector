@@ -25,7 +25,14 @@ import {
   CallSmartContractDto,
   CallSmartContractResponse,
   CreateSmartContractCallTransactionDto,
+  CreateSmartContractDeployTransactionDto,
 } from 'src/transaction/dto/smartcontract-transaction.dto';
+import {
+  CreateEthTokenDeployTransactionDto,
+  CreateHathorMeltTokenTransaction,
+  CreateHathorMintTokenTransaction,
+  CreateHathorTokenDeployTransaction,
+} from 'src/transaction/dto/token-transaction.dto';
 
 @Injectable()
 export class CryptumService {
@@ -237,6 +244,97 @@ export class CryptumService {
       params,
       contractAddress,
       fee,
+    });
+  }
+  async createSmartContractDeployTransaction(
+    input: CreateSmartContractDeployTransactionDto,
+  ): Promise<TransactionResponse> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { protocol, privateKey, contractName, source, params, fee, feeCurrency } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol,
+      privateKey,
+    });
+    return txController.createSmartContractDeployTransaction({
+      protocol,
+      wallet,
+      contractName,
+      source,
+      params,
+      fee,
+      feeCurrency,
+    });
+  }
+  async createEthTokenDeployTransaction(input: CreateEthTokenDeployTransactionDto): Promise<TransactionResponse> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { protocol, privateKey, tokenType, params, fee, feeCurrency } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol,
+      privateKey,
+    });
+    return txController.createTokenDeployTransaction({
+      protocol,
+      wallet,
+      tokenType,
+      params,
+      fee,
+      feeCurrency,
+    });
+  }
+  async createHathorTokenDeployTransaction(input: CreateHathorTokenDeployTransaction): Promise<TransactionResponse> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { privateKey, tokenName, tokenSymbol, amount, mintAuthorityAddress, meltAuthorityAddress } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol: Protocol.HATHOR,
+      privateKey,
+    });
+    return txController.createHathorTokenTransactionFromWallet({
+      wallet,
+      tokenName,
+      tokenSymbol,
+      amount,
+      type: 'HATHOR_TOKEN_CREATION',
+      mintAuthorityAddress,
+      meltAuthorityAddress,
+    });
+  }
+  async createHathorMintTokenTransaction(input: CreateHathorMintTokenTransaction): Promise<TransactionResponse> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { privateKey, tokenUid, amount, mintAuthorityAddress, changeAddress, address } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol: Protocol.HATHOR,
+      privateKey,
+    });
+    return txController.createHathorTokenTransactionFromWallet({
+      wallet,
+      tokenUid,
+      amount,
+      address,
+      changeAddress,
+      type: 'HATHOR_TOKEN_MINT',
+      mintAuthorityAddress,
+    });
+  }
+  async createHathorMeltTokenTransaction(input: CreateHathorMeltTokenTransaction): Promise<TransactionResponse> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { privateKey, tokenUid, amount, changeAddress, address, meltAuthorityAddress } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol: Protocol.HATHOR,
+      privateKey,
+    });
+    return txController.createHathorTokenTransactionFromWallet({
+      wallet,
+      tokenUid,
+      amount,
+      address,
+      changeAddress,
+      type: 'HATHOR_TOKEN_MELT',
+      meltAuthorityAddress,
     });
   }
 }

@@ -24,3 +24,9 @@ export enum TransactionType {
   HATHOR_TOKEN_MINT = 'HATHOR_TOKEN_MINT',
   HATHOR_TOKEN_MELT = 'HATHOR_TOKEN_MELT',
 }
+
+export enum EthTokenType {
+  ERC20 = 'ERC20',
+  ERC721 = 'ERC721',
+  ERC1155 = 'ERC1155',
+}

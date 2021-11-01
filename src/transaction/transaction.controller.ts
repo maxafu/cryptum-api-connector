@@ -14,7 +14,17 @@ import {
 import { GetTransactionByHashDto } from './dto/get-transaction.dto';
 import { GetUtxosDto } from './dto/get-utxo.dto';
 import { SendTransactionDto } from './dto/send-transaction.dto';
-import { CallSmartContractDto, CreateSmartContractCallTransactionDto } from './dto/smartcontract-transaction.dto';
+import {
+  CallSmartContractDto,
+  CreateSmartContractCallTransactionDto,
+  CreateSmartContractDeployTransactionDto,
+} from './dto/smartcontract-transaction.dto';
+import {
+  CreateEthTokenDeployTransactionDto,
+  CreateHathorMeltTokenTransaction,
+  CreateHathorMintTokenTransaction,
+  CreateHathorTokenDeployTransaction,
+} from './dto/token-transaction.dto';
 
 @ApiTags('transaction')
 @ApiExtraModels(CreateRippleTransferTransactionDto, CreateStellarTransferTransactionDto)
@@ -74,5 +84,25 @@ export class TransactionController {
   @Post('smartcontract/send')
   createSmartContractCallTransaction(@Body() body: CreateSmartContractCallTransactionDto) {
     return this.cryptumService.createSmartContractCallTransaction(body);
+  }
+  @Post('smartcontract/deploy')
+  createSmartContractDeployTransaction(@Body() body: CreateSmartContractDeployTransactionDto) {
+    return this.cryptumService.createSmartContractDeployTransaction(body);
+  }
+  @Post('token/deploy-eth')
+  createEthTokenDeployTransaction(@Body() body: CreateEthTokenDeployTransactionDto) {
+    return this.cryptumService.createEthTokenDeployTransaction(body);
+  }
+  @Post('token/deploy-hathor')
+  createHathorTokenDeployTransaction(@Body() body: CreateHathorTokenDeployTransaction) {
+    return this.cryptumService.createHathorTokenDeployTransaction(body);
+  }
+  @Post('token/mint-hathor')
+  createHathorMintTokenTransaction(@Body() body: CreateHathorMintTokenTransaction) {
+    return this.cryptumService.createHathorMintTokenTransaction(body);
+  }
+  @Post('token/melt-hathor')
+  createHathorMeltTokenTransaction(@Body() body: CreateHathorMeltTokenTransaction) {
+    return this.cryptumService.createHathorMeltTokenTransaction(body);
   }
 }

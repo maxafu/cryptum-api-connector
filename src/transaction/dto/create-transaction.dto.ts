@@ -1,4 +1,4 @@
-import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsString } from 'class-validator';
 import { Protocol, TrustlineProtocol } from '../../cryptum/interfaces/protocols.interface';
 
@@ -123,7 +123,7 @@ export class CreateEthereumTransferTransactionDto extends OmitType(CreateTransfe
   fee?: EthFee;
 }
 
-export class CreateCeloTransferTransactionDto extends PartialType(CreateEthereumTransferTransactionDto) {
+export class CreateCeloTransferTransactionDto extends CreateEthereumTransferTransactionDto {
   @ApiProperty()
   feeCurrency?: string;
 }

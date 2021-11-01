@@ -41,3 +41,15 @@ export class CreateSmartContractCallTransactionDto extends OmitType(CreateCeloTr
 export class CallSmartContractResponse {
   result: string | any[];
 }
+
+export class CreateSmartContractDeployTransactionDto extends OmitType(CreateCeloTransferTransactionDto, [
+  'tokenSymbol',
+  'amount',
+  'destination',
+  'contractAddress',
+]) {
+  protocol: EthProtocol;
+  contractName: string;
+  source: string;
+  params: string[] = [];
+}
