@@ -13,6 +13,7 @@ import { Wallet } from '../wallet/dto/wallet.dto';
 import { GenerateWalletDto } from '../wallet/dto/generate-wallet.dto';
 import {
   CreateBitcoinTransferTransactionDto,
+  CreateCardanoTransferTransactionDto,
   CreateCeloTransferTransactionDto,
   CreateEthereumTransferTransactionDto,
   CreateHathorTransferTransactionDto,
@@ -209,6 +210,29 @@ export class CryptumService {
       });
     } else if (inputs) {
       return txController.createHathorTransferTransactionFromUTXO({
+        inputs,
+        outputs,
+      });
+    } else {
+      throw new BadRequestException('Missing private key or inputs');
+    }
+  }
+  async createCardanoTransferTransaction(input: CreateCardanoTransferTransactionDto): Promise<TransactionResponse> {
+    const txController = this.sdk.getTransactionController();
+    const { privateKey, inputs, outputs } = input;
+
+    if (privateKey) {
+      const walletController = this.sdk.getWalletController();
+      const wallet = await walletController.generateWalletFromPrivateKey({
+        protocol: Protocol.CARDANO,
+        privateKey,
+      });
+      return txController.createCardanoTransferTransactionFromWallet({
+        wallet,
+        outputs,
+      });
+    } else if (inputs) {
+      return txController.createCardanoTransferTransactionFromUTXO({
         inputs,
         outputs,
       });

@@ -136,6 +136,9 @@ export class Output {
 export class HathorOutput extends Output {
   token: string;
 }
+export class CardanoOutput extends OmitType(Output, ['token']) {
+  token: { policyId: string; symbol: string };
+}
 export class Input {
   txHash: string;
   index: number;
@@ -168,4 +171,9 @@ export class CreateBitcoinTransferTransactionDto extends OmitType(CreateTransfer
 
   @ApiProperty()
   outputs: Output[];
+}
+
+export class CreateCardanoTransferTransactionDto extends OmitType(CreateBitcoinTransferTransactionDto, ['outputs']) {
+  @ApiProperty()
+  outputs: CardanoOutput[];
 }

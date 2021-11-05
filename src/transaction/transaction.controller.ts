@@ -4,6 +4,7 @@ import { CryptumService } from '../cryptum/cryptum.service';
 import { Protocol } from '../cryptum/interfaces/protocols.interface';
 import {
   CreateBitcoinTransferTransactionDto,
+  CreateCardanoTransferTransactionDto,
   CreateCeloTransferTransactionDto,
   CreateEthereumTransferTransactionDto,
   CreateHathorTransferTransactionDto,
@@ -76,6 +77,10 @@ export class TransactionController {
   @Post('transfer/hathor')
   createHathorTransferTransaction(@Body() body: CreateHathorTransferTransactionDto) {
     return this.cryptumService.createHathorTransferTransaction(body);
+  }
+  @Post('transfer/cardano')
+  createCardanoTransferTransaction(@Body() body: CreateCardanoTransferTransactionDto) {
+    return this.cryptumService.createCardanoTransferTransaction(body);
   }
   @Post('smartcontract/call')
   callSmartContractMethod(@Body() body: CallSmartContractDto) {
