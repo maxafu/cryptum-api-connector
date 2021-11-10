@@ -33,7 +33,7 @@
     "@nestjs/swagger": "^5.1.4",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
-    "cryptum-sdk": "^0.0.15",
+    "cryptum-sdk": "^0.0.16",
     "fastify": "^3.22.1",
     "fastify-swagger": "^4.12.6",
     "reflect-metadata": "^0.1.13",
