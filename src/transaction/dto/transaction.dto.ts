@@ -1,5 +1,12 @@
+import { Protocol } from '../../cryptum/interfaces/protocols.interface';
+
 export class TransactionResponse {
   hash: string;
+}
+export class BuildTransactionResponse {
+  protocol: Protocol;
+  signedTx: string;
+  type: TransactionType;
 }
 
 export class Transaction {}
