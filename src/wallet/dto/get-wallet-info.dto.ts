@@ -1,5 +1,5 @@
 import { IsEnum } from 'class-validator';
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Protocol } from '../../cryptum/interfaces/protocols.interface';
 import { Transform } from 'class-transformer';
 
@@ -21,7 +21,7 @@ export class GetWalletInfoQueryStringDto {
   tokenAddresses?: string[] = [];
 }
 
-export class GetWalletInfoDto extends PartialType(GetWalletInfoQueryStringDto) {
+export class GetWalletInfoDto extends GetWalletInfoQueryStringDto {
   address: string;
 
   constructor(address: string, protocol: Protocol, tokenAddresses = []) {

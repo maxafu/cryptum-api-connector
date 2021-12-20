@@ -1,12 +1,12 @@
+// @ts-nocheck
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import * as CryptumSdk from 'cryptum-sdk';
+import CryptumSdk from 'cryptum-sdk';
 import { Block, GetBlockDto } from '../block/dto/get-block.dto';
 import { Prices } from '../prices/dto/get-prices.dto';
 import { GetTransactionByHashDto } from '../transaction/dto/get-transaction.dto';
 import { GetUtxosDto } from '../transaction/dto/get-utxo.dto';
 import { SendTransactionDto } from '../transaction/dto/send-transaction.dto';
-import { Transaction, BuildTransactionResponse, UTXO } from '../transaction/dto/transaction.dto';
+import { Transaction, UTXO, TransactionResponse } from '../transaction/dto/transaction.dto';
 import { GetWalletInfoDto } from '../wallet/dto/get-wallet-info.dto';
 import { WalletInfo } from '../wallet/dto/wallet-info.dto';
 import { Wallet } from '../wallet/dto/wallet.dto';
@@ -27,20 +27,22 @@ import {
   CallSmartContractResponse,
   CreateSmartContractCallTransactionDto,
   CreateSmartContractDeployTransactionDto,
-} from 'src/transaction/dto/smartcontract-transaction.dto';
+} from '../transaction/dto/smartcontract-transaction.dto';
 import {
   CreateEthTokenDeployTransactionDto,
   CreateHathorMeltTokenTransaction,
   CreateHathorMintTokenTransaction,
   CreateHathorTokenDeployTransaction,
-} from 'src/transaction/dto/token-transaction.dto';
+} from '../transaction/dto/token-transaction.dto';
+import { SignedTransaction } from 'cryptum-sdk/dist/src/features/transaction/entity';
+import config from '../config';
 
 @Injectable()
 export class CryptumService {
   private sdk: CryptumSdk;
 
-  constructor(private configService: ConfigService) {
-    this.sdk = new CryptumSdk(this.configService.get<any>('cryptumConfig'));
+  constructor() {
+    this.sdk = new CryptumSdk(config.cryptumConfig());
   }
   generateRandomMnemonic(strength?: number): string {
     return this.sdk.getWalletController().generateRandomMnemonic(strength);
@@ -49,7 +51,7 @@ export class CryptumService {
     return this.sdk.getWalletController().generateWallet(input);
   }
   async getWalletInfo(input: GetWalletInfoDto): Promise<WalletInfo> {
-    return this.sdk.getWalletController().getWalletInfo(input);
+    return this.sdk.getWalletController().getWalletInfo(input) as any;
   }
   async getTransactionByHash(input: GetTransactionByHashDto): Promise<Transaction> {
     return this.sdk.getTransactionController().getTransactionByHash(input);
@@ -60,13 +62,13 @@ export class CryptumService {
   async getBlock(input: GetBlockDto): Promise<Block> {
     return this.sdk.getTransactionController().getBlock(input);
   }
-  async sendTransaction(input: SendTransactionDto): Promise<BuildTransactionResponse> {
+  async sendTransaction(input: SendTransactionDto): Promise<TransactionResponse> {
     return this.sdk.getTransactionController().sendTransaction(input);
   }
   async getPrices(asset: string): Promise<Prices> {
     return this.sdk.getPricesController().getPrices(asset);
   }
-  async createTrustlineTransaction(input: CreateTrustlineTransactionDto): Promise<BuildTransactionResponse> {
+  async createTrustlineTransaction(input: CreateTrustlineTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { protocol, privateKey, assetSymbol, issuer, limit, memo, fee } = input;
@@ -81,7 +83,7 @@ export class CryptumService {
       limit,
       memo,
       fee,
-    };
+    } as any;
     switch (protocol) {
       case TrustlineProtocol.STELLAR:
         return txController.createStellarTrustlineTransaction(transaction);
@@ -91,9 +93,7 @@ export class CryptumService {
         throw new BadRequestException('Unsupported protocol');
     }
   }
-  async createStellarTransferTransaction(
-    input: CreateStellarTransferTransactionDto,
-  ): Promise<BuildTransactionResponse> {
+  async createStellarTransferTransaction(input: CreateStellarTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, issuer, assetSymbol, amount, destination, memo, createAccount, fee } = input;
@@ -112,7 +112,7 @@ export class CryptumService {
       fee,
     });
   }
-  async createRippleTransferTransaction(input: CreateRippleTransferTransactionDto): Promise<BuildTransactionResponse> {
+  async createRippleTransferTransaction(input: CreateRippleTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, issuer, assetSymbol, amount, destination, memo, fee } = input;
@@ -130,7 +130,7 @@ export class CryptumService {
       fee,
     });
   }
-  async createCeloTransferTransaction(input: CreateCeloTransferTransactionDto): Promise<BuildTransactionResponse> {
+  async createCeloTransferTransaction(input: CreateCeloTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, tokenSymbol, contractAddress, amount, destination, feeCurrency, fee } = input;
@@ -148,9 +148,7 @@ export class CryptumService {
       fee,
     });
   }
-  async createEthereumTransferTransaction(
-    input: CreateEthereumTransferTransactionDto,
-  ): Promise<BuildTransactionResponse> {
+  async createEthereumTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, tokenSymbol, contractAddress, amount, destination, fee } = input;
@@ -167,7 +165,7 @@ export class CryptumService {
       fee,
     });
   }
-  async createBscTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<BuildTransactionResponse> {
+  async createBscTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, tokenSymbol, contractAddress, amount, destination, fee } = input;
@@ -184,9 +182,7 @@ export class CryptumService {
       fee,
     });
   }
-  async createBitcoinTransferTransaction(
-    input: CreateBitcoinTransferTransactionDto,
-  ): Promise<BuildTransactionResponse> {
+  async createBitcoinTransferTransaction(input: CreateBitcoinTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, inputs, outputs } = input;
@@ -200,7 +196,7 @@ export class CryptumService {
       outputs,
     });
   }
-  async createHathorTransferTransaction(input: CreateHathorTransferTransactionDto): Promise<BuildTransactionResponse> {
+  async createHathorTransferTransaction(input: CreateHathorTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const { privateKey, inputs, outputs } = input;
 
@@ -223,9 +219,7 @@ export class CryptumService {
       throw new BadRequestException('Missing private key or inputs');
     }
   }
-  async createCardanoTransferTransaction(
-    input: CreateCardanoTransferTransactionDto,
-  ): Promise<BuildTransactionResponse> {
+  async createCardanoTransferTransaction(input: CreateCardanoTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const { privateKey, inputs, outputs } = input;
 
@@ -260,9 +254,7 @@ export class CryptumService {
       protocol,
     });
   }
-  async createSmartContractCallTransaction(
-    input: CreateSmartContractCallTransactionDto,
-  ): Promise<BuildTransactionResponse> {
+  async createSmartContractCallTransaction(input: CreateSmartContractCallTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { protocol, privateKey, contractAddress, contractAbi, method, params, fee } = input;
@@ -282,7 +274,7 @@ export class CryptumService {
   }
   async createSmartContractDeployTransaction(
     input: CreateSmartContractDeployTransactionDto,
-  ): Promise<BuildTransactionResponse> {
+  ): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { protocol, privateKey, contractName, source, params, fee, feeCurrency } = input;
@@ -300,7 +292,7 @@ export class CryptumService {
       feeCurrency,
     });
   }
-  async createEthTokenDeployTransaction(input: CreateEthTokenDeployTransactionDto): Promise<BuildTransactionResponse> {
+  async createEthTokenDeployTransaction(input: CreateEthTokenDeployTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { protocol, privateKey, tokenType, params, fee, feeCurrency } = input;
@@ -317,9 +309,7 @@ export class CryptumService {
       feeCurrency,
     });
   }
-  async createHathorTokenDeployTransaction(
-    input: CreateHathorTokenDeployTransaction,
-  ): Promise<BuildTransactionResponse> {
+  async createHathorTokenDeployTransaction(input: CreateHathorTokenDeployTransaction): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, tokenName, tokenSymbol, amount, mintAuthorityAddress, meltAuthorityAddress } = input;
@@ -337,7 +327,7 @@ export class CryptumService {
       meltAuthorityAddress,
     });
   }
-  async createHathorMintTokenTransaction(input: CreateHathorMintTokenTransaction): Promise<BuildTransactionResponse> {
+  async createHathorMintTokenTransaction(input: CreateHathorMintTokenTransaction): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, tokenUid, amount, mintAuthorityAddress, changeAddress, address } = input;
@@ -355,7 +345,7 @@ export class CryptumService {
       mintAuthorityAddress,
     });
   }
-  async createHathorMeltTokenTransaction(input: CreateHathorMeltTokenTransaction): Promise<BuildTransactionResponse> {
+  async createHathorMeltTokenTransaction(input: CreateHathorMeltTokenTransaction): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
     const { privateKey, tokenUid, amount, changeAddress, address, meltAuthorityAddress } = input;

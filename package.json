@@ -5,17 +5,22 @@
   "description": "Cryptum API Connector",
   "author": "Blockforce",
   "private": true,
+  "main": "dist/main.js",
   "license": "MIT",
   "engines": {
-    "node": "^14.18.0"
+    "node": "^14.x.x"
+  },
+  "bin": {
+    "cryptum-api-connector": "dist/main.js"
   },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start:dev": "nest start --watch",
+    "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start": "node dist/main",
+    "build-start": "npm run build && node dist/main.js --saveWallets --useDb",
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -24,6 +29,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.43.0",
     "@nestjs/common": "^8.1.2",
     "@nestjs/config": "^1.0.3",
     "@nestjs/core": "^8.1.2",
@@ -31,23 +37,32 @@
     "@nestjs/platform-express": "^8.1.2",
     "@nestjs/platform-fastify": "^8.1.2",
     "@nestjs/swagger": "^5.1.4",
+    "axios": "^0.24.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
-    "cryptum-sdk": "^0.0.16",
+    "crypto-js": "^4.1.1",
+    "cryptum-sdk": "^0.0.20",
+    "dotenv": "^10.0.0",
     "fastify": "^3.22.1",
     "fastify-swagger": "^4.12.6",
+    "meow": "^7.1.1",
+    "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.4.0"
+    "rxjs": "^7.4.0",
+    "typeorm": "^0.2.41",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.1.4",
     "@nestjs/schematics": "^8.0.4",
     "@nestjs/testing": "^8.1.2",
+    "@types/crypto-js": "^4.0.2",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
     "@types/supertest": "^2.0.11",
+    "@types/uuid": "^8.3.3",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "eslint": "^8.1.0",

@@ -4,7 +4,7 @@ export class Prices {
   CELO: string;
   USD: string;
   BRL: string;
-  JPY: string;
+  JPY?: string;
   EUR: string;
   HTR: string;
   MDA: string;

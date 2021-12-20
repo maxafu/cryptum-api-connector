@@ -6,13 +6,13 @@ export class Block {}
 
 export class GetBlockDto {
   @ApiProperty()
-  block: string | number;
+  block: string;
 
   @ApiProperty()
   @IsEnum(Protocol)
   protocol: Protocol;
 
-  constructor(block: string | number, protocol: Protocol) {
+  constructor(block: string, protocol: Protocol) {
     this.block = block;
     this.protocol = protocol;
   }

@@ -1,5 +1,5 @@
 import { OmitType, PickType } from '@nestjs/swagger';
-import { EthProtocol } from 'src/cryptum/interfaces/protocols.interface';
+import { EthProtocol } from '../../cryptum/interfaces/protocols.interface';
 import { CreateCeloTransferTransactionDto, CreateTransferTransactionDto } from './create-transaction.dto';
 
 export class MethodParameter {

@@ -1,5 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { storeWallet } from '../kms/wallet';
+import config from '../config';
 import { CryptumService } from '../cryptum/cryptum.service';
 import { GenerateWalletDto } from './dto/generate-wallet.dto';
 import { GetWalletInfoDto, GetWalletInfoQueryStringDto } from './dto/get-wallet-info.dto';
@@ -12,8 +14,13 @@ export class WalletController {
   constructor(private cryptumService: CryptumService) {}
 
   @Post()
-  generateWallet(@Body() generateWalletDto: GenerateWalletDto): Promise<Wallet> {
-    return this.cryptumService.generateWallet(generateWalletDto);
+  async generateWallet(@Body() generateWalletDto: GenerateWalletDto): Promise<Wallet> {
+    const wallet = await this.cryptumService.generateWallet(generateWalletDto);
+    if (config.saveWallets) {
+      const storedWallet = await storeWallet(wallet as any);
+      return { id: storedWallet.id, ...storedWallet.wallet };
+    }
+    return wallet;
   }
   @Post('mnemonic')
   generateRandomMnemonic(): { mnemonic: string } {
