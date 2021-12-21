@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { BadRequestException, Injectable } from '@nestjs/common';
 import CryptumSdk from 'cryptum-sdk';
 import { Block, GetBlockDto } from '../block/dto/get-block.dto';
@@ -8,8 +7,7 @@ import { GetUtxosDto } from '../transaction/dto/get-utxo.dto';
 import { SendTransactionDto } from '../transaction/dto/send-transaction.dto';
 import { Transaction, UTXO, TransactionResponse } from '../transaction/dto/transaction.dto';
 import { GetWalletInfoDto } from '../wallet/dto/get-wallet-info.dto';
-import { WalletInfo } from '../wallet/dto/wallet-info.dto';
-import { Wallet } from '../wallet/dto/wallet.dto';
+// import { Wallet } from '../wallet/dto/wallet.dto';
 import { GenerateWalletDto } from '../wallet/dto/generate-wallet.dto';
 import {
   CreateBitcoinTransferTransactionDto,
@@ -34,7 +32,17 @@ import {
   CreateHathorMintTokenTransaction,
   CreateHathorTokenDeployTransaction,
 } from '../transaction/dto/token-transaction.dto';
-import { SignedTransaction } from 'cryptum-sdk/dist/src/features/transaction/entity';
+import {
+  BitcoinTransferTransactionInput,
+  CeloTransferTransactionInput,
+  EthereumTransferTransactionInput,
+  HathorTransferTransactionInput,
+  RippleTransferTransactionInput,
+  SignedTransaction,
+  SmartContractDeployTransactionInput,
+  StellarTransferTransactionInput,
+  TokenDeployTransactionInput,
+} from 'cryptum-sdk/dist/src/features/transaction/entity';
 import config from '../config';
 
 @Injectable()
@@ -47,11 +55,11 @@ export class CryptumService {
   generateRandomMnemonic(strength?: number): string {
     return this.sdk.getWalletController().generateRandomMnemonic(strength);
   }
-  async generateWallet(input: GenerateWalletDto): Promise<Wallet> {
+  async generateWallet(input: GenerateWalletDto) {
     return this.sdk.getWalletController().generateWallet(input);
   }
-  async getWalletInfo(input: GetWalletInfoDto): Promise<WalletInfo> {
-    return this.sdk.getWalletController().getWalletInfo(input) as any;
+  async getWalletInfo(input: GetWalletInfoDto) {
+    return this.sdk.getWalletController().getWalletInfo(input);
   }
   async getTransactionByHash(input: GetTransactionByHashDto): Promise<Transaction> {
     return this.sdk.getTransactionController().getTransactionByHash(input);
@@ -110,7 +118,7 @@ export class CryptumService {
       createAccount,
       memo,
       fee,
-    });
+    } as StellarTransferTransactionInput);
   }
   async createRippleTransferTransaction(input: CreateRippleTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -128,7 +136,7 @@ export class CryptumService {
       destination,
       memo,
       fee,
-    });
+    } as RippleTransferTransactionInput);
   }
   async createCeloTransferTransaction(input: CreateCeloTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -146,7 +154,7 @@ export class CryptumService {
       destination,
       feeCurrency,
       fee,
-    });
+    } as CeloTransferTransactionInput);
   }
   async createEthereumTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -163,7 +171,7 @@ export class CryptumService {
       amount,
       destination,
       fee,
-    });
+    } as EthereumTransferTransactionInput);
   }
   async createBscTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -180,7 +188,7 @@ export class CryptumService {
       amount,
       destination,
       fee,
-    });
+    } as EthereumTransferTransactionInput);
   }
   async createBitcoinTransferTransaction(input: CreateBitcoinTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -194,7 +202,7 @@ export class CryptumService {
       wallet,
       inputs,
       outputs,
-    });
+    } as BitcoinTransferTransactionInput);
   }
   async createHathorTransferTransaction(input: CreateHathorTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -209,12 +217,12 @@ export class CryptumService {
       return txController.createHathorTransferTransactionFromWallet({
         wallet,
         outputs,
-      });
+      } as HathorTransferTransactionInput);
     } else if (inputs) {
       return txController.createHathorTransferTransactionFromUTXO({
         inputs,
         outputs,
-      });
+      } as HathorTransferTransactionInput);
     } else {
       throw new BadRequestException('Missing private key or inputs');
     }
@@ -228,16 +236,16 @@ export class CryptumService {
       const wallet = await walletController.generateWalletFromPrivateKey({
         protocol: Protocol.CARDANO,
         privateKey,
-      });
+      } as any);
       return txController.createCardanoTransferTransactionFromWallet({
         wallet,
         outputs,
-      });
+      } as any);
     } else if (inputs) {
       return txController.createCardanoTransferTransactionFromUTXO({
         inputs,
         outputs,
-      });
+      } as any);
     } else {
       throw new BadRequestException('Missing private key or inputs');
     }
@@ -257,7 +265,7 @@ export class CryptumService {
   async createSmartContractCallTransaction(input: CreateSmartContractCallTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
-    const { protocol, privateKey, contractAddress, contractAbi, method, params, fee } = input;
+    const { protocol, privateKey, contractAddress, contractAbi, method, params, fee, feeCurrency } = input;
     const wallet = await walletController.generateWalletFromPrivateKey({
       protocol,
       privateKey,
@@ -270,6 +278,7 @@ export class CryptumService {
       params,
       contractAddress,
       fee,
+      feeCurrency,
     });
   }
   async createSmartContractDeployTransaction(
@@ -290,7 +299,7 @@ export class CryptumService {
       params,
       fee,
       feeCurrency,
-    });
+    } as SmartContractDeployTransactionInput);
   }
   async createEthTokenDeployTransaction(input: CreateEthTokenDeployTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
@@ -307,12 +316,12 @@ export class CryptumService {
       params,
       fee,
       feeCurrency,
-    });
+    } as TokenDeployTransactionInput);
   }
   async createHathorTokenDeployTransaction(input: CreateHathorTokenDeployTransaction): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();
-    const { privateKey, tokenName, tokenSymbol, amount, mintAuthorityAddress, meltAuthorityAddress } = input;
+    const { privateKey, tokenName, tokenSymbol, address, amount, mintAuthorityAddress, meltAuthorityAddress } = input;
     const wallet = await walletController.generateWalletFromPrivateKey({
       protocol: Protocol.HATHOR,
       privateKey,
@@ -325,6 +334,7 @@ export class CryptumService {
       type: 'HATHOR_TOKEN_CREATION',
       mintAuthorityAddress,
       meltAuthorityAddress,
+      address,
     });
   }
   async createHathorMintTokenTransaction(input: CreateHathorMintTokenTransaction): Promise<SignedTransaction> {

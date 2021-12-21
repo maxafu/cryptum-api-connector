@@ -20,7 +20,7 @@ export class WalletController {
       const storedWallet = await storeWallet(wallet as any);
       return { id: storedWallet.id, ...storedWallet.wallet };
     }
-    return wallet;
+    return wallet as Wallet;
   }
   @Post('mnemonic')
   generateRandomMnemonic(): { mnemonic: string } {
@@ -29,11 +29,13 @@ export class WalletController {
   }
   @Get(':address/info')
   @ApiResponse({ type: WalletInfo })
-  getWalletInfo(
+  async getWalletInfo(
     @Param('address') address: string,
     @Query() queryString: GetWalletInfoQueryStringDto,
   ): Promise<WalletInfo> {
     const { protocol, tokenAddresses } = queryString;
-    return this.cryptumService.getWalletInfo(new GetWalletInfoDto(address, protocol, tokenAddresses));
+    return (await this.cryptumService.getWalletInfo(
+      new GetWalletInfoDto(address, protocol, tokenAddresses),
+    )) as WalletInfo;
   }
 }

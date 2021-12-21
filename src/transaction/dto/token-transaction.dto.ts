@@ -17,6 +17,7 @@ export class CreateHathorTokenDeployTransaction extends OmitType(CreateEthTokenD
   'tokenType',
   'protocol',
 ]) {
+  address: string;
   tokenName: string;
   tokenSymbol: string;
   amount: string;
@@ -29,7 +30,6 @@ export class CreateHathorMintTokenTransaction extends OmitType(CreateHathorToken
   'tokenSymbol',
   'meltAuthorityAddress',
 ]) {
-  address: string;
   changeAddress: string;
   tokenUid: string;
   mintAuthorityAddress?: string;
@@ -40,7 +40,6 @@ export class CreateHathorMeltTokenTransaction extends OmitType(CreateHathorToken
   'tokenSymbol',
   'mintAuthorityAddress',
 ]) {
-  address: string;
   changeAddress: string;
   tokenUid: string;
   meltAuthorityAddress?: string;

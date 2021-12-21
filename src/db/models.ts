@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Generated, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Generated, Column, CreateDateColumn } from 'typeorm';
 
 @Entity({
   name: 'wallet',
@@ -10,4 +10,7 @@ export class CustodialWallet {
 
   @Column({ type: 'text', nullable: false })
   wallet: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 }

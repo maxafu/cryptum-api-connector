@@ -46,10 +46,6 @@ async function bootstrap() {
         azure: {
           type: 'boolean',
         },
-        interval: {
-          type: 'number',
-          default: 5,
-        },
       },
     },
   );
@@ -58,14 +54,14 @@ async function bootstrap() {
     let password = '';
     if (flags.azure) {
       config.useAzure = true;
-      const password = await getAzureKeyVaultSecret(config.azure().secretName);
+      password = await getAzureKeyVaultSecret(config.azure().secretName);
       if (!password) {
         console.error('Azure Key Vault secret does not exists.');
         return;
       }
     } else if (flags.aws) {
       config.useAWS = true;
-      const password = await getAWSSecret(config.aws().secretId);
+      password = await getAWSSecret(config.aws().secretId);
       if (!password) {
         console.error('AWS secret does not exists.');
         return;
