@@ -41,7 +41,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "crypto-js": "^4.1.1",
-    "cryptum-sdk": "^0.0.20",
+    "cryptum-sdk": "0.0.26",
     "dotenv": "^10.0.0",
     "fastify": "^3.22.1",
     "fastify-swagger": "^4.12.6",
@@ -54,7 +54,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@nestjs/cli": "^8.1.4",
+    "@nestjs/cli": "^8.2.5",
     "@nestjs/schematics": "^8.0.4",
     "@nestjs/testing": "^8.1.2",
     "@types/crypto-js": "^4.0.2",

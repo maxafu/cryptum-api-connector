@@ -29,7 +29,7 @@ Run the command
 
 ```bash
 # watch mode
-npm run start:dev
+npm run dev
 
 # production mode
 npm run build && npm run start

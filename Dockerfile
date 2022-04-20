@@ -1,6 +1,6 @@
 FROM node:14-alpine
 
-RUN apk update && apk add --update git openssh python g++ make
+RUN apk update && apk add --update g++ make
 
 RUN mkdir -p /app/node_modules
 COPY package*.json /app/
