@@ -8,9 +8,10 @@ export class AuthMiddleware implements NestMiddleware {
       if (req.headers['x-api-key'] !== process.env['AUTH_API_KEY']) {
         throw new ForbiddenException('Invalid API key');
       }
+    } else {
+      Logger.warn('If you want a protection layer, please set the AUTH_API_KEY environment variable .');
     }
 
-    Logger.warn('If you want a protection layer, please set the AUTH_API_KEY environment variable .');
     next();
   }
 
