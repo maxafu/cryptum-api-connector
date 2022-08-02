@@ -1,13 +1,12 @@
 # Cryptum API Connector
 
-
 API service to facilitate integration with Cryptum SDK and blockchain APIs.
 
 ## Technologies
+
 - [Nest framework](https://github.com/nestjs/nest)
 - [Node.js v14](https://nodejs.org)
 - [Cryptum SDK](https://github.com/blockforce-official/cryptum-sdk)
-
 
 ## Configuration
 
@@ -15,7 +14,7 @@ There are a few environment variables you need to configure first and those are 
 
 - `CRYPTUM_ENVIRONMENT` - possible values are: `development` or `production`.
 - `CRYPTUM_API_KEY` - Cryptum API key that you should create in Cryptum Dashboard.
-
+- `AUTH_API_KEY` - A chosen api key for intern authorization, if you don't provide it, your instance wont use authorization.
 
 ## Running
 
@@ -53,6 +52,7 @@ npm run test:e2e
 # test coverage
 npm run test:cov
 ```
+
 <br>
 
 ## Contributing
