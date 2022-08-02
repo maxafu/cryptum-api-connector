@@ -11,7 +11,6 @@ import meow from 'meow';
 import config from './config';
 import { AppModule } from './app.module';
 import * as db from './db';
-import { CryptumExceptionFilter } from './filters/cryptum-exception.filter';
 import { getAzureKeyVaultSecret } from './kms/azure';
 import { getAWSSecret } from './kms/aws';
 
@@ -20,7 +19,7 @@ async function bootstrap() {
     `
       Usage
           $ cryptum-api-connector [options]
-  
+
       Options
         --saveWallets                     Indicates if it will save generated wallets to a file or database.
         --useLocalPath                    Indicates if it will use custom path to wallet store file.
@@ -90,7 +89,6 @@ async function bootstrap() {
       stopAtFirstError: true,
     }),
   );
-  app.useGlobalFilters(new CryptumExceptionFilter());
 
   const swaggerConfig = new DocumentBuilder().setTitle('Cryptum API connector').setVersion('1.0').build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
