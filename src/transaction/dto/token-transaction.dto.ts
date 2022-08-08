@@ -44,3 +44,40 @@ export class CreateHathorMeltTokenTransaction extends OmitType(CreateHathorToken
   tokenUid: string;
   meltAuthorityAddress?: string;
 }
+
+export class CreateSolanaTokenDeployTransaction extends OmitType(CreateEthTokenDeployTransactionDto, [
+  'fee',
+  'feeCurrency',
+  'params',
+  'tokenType',
+  'protocol',
+]) {
+  tokenName: string;
+  tokenSymbol: string;
+  amount: string;
+  fixedSupply: boolean;
+  decimals: number;
+}
+
+export class CreateSolanaTokenMintTransaction extends OmitType(CreateEthTokenDeployTransactionDto, [
+  'fee',
+  'feeCurrency',
+  'params',
+  'tokenType',
+  'protocol',
+]) {
+    destination: string;
+    token: string;
+    amount: string | number;
+}
+
+export class CreateSolanaTokenBurnTransaction extends OmitType(CreateEthTokenDeployTransactionDto, [
+  'fee',
+  'feeCurrency',
+  'params',
+  'tokenType',
+  'protocol',
+]) {
+    token: string;
+    amount: string | number;
+}

@@ -192,3 +192,17 @@ export class CreateCardanoTransferTransactionDto extends OmitType(CreateBitcoinT
   @ApiProperty()
   outputs: CardanoOutput[];
 }
+
+export class CreateSolanaTransferTransactionDto extends OmitType(CreateTransferTransactionDto, ['protocol']) {
+  @ApiProperty()
+  token?: string;
+
+  @ApiProperty()
+  @IsNumberString()
+  amount: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  destination: string;
+}

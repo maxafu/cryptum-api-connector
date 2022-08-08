@@ -7,6 +7,7 @@ export enum Protocol {
   RIPPLE = 'RIPPLE',
   HATHOR = 'HATHOR',
   CARDANO = 'CARDANO',
+  SOLANA = 'SOLANA',
 }
 
 export enum TrustlineProtocol {
