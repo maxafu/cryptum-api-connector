@@ -9,6 +9,7 @@ import {
   CreateEthereumTransferTransactionDto,
   CreateHathorTransferTransactionDto,
   CreateRippleTransferTransactionDto,
+  CreateSolanaTransferTransactionDto,
   CreateStellarTransferTransactionDto,
   CreateTrustlineTransactionDto,
 } from './dto/create-transaction.dto';
@@ -25,6 +26,8 @@ import {
   CreateHathorMeltTokenTransaction,
   CreateHathorMintTokenTransaction,
   CreateHathorTokenDeployTransaction,
+  CreateSolanaTokenDeployTransaction,
+  CreateSolanaTokenMintTransaction,
 } from './dto/token-transaction.dto';
 
 @ApiTags('transaction')
@@ -82,6 +85,10 @@ export class TransactionController {
   createCardanoTransferTransaction(@Body() body: CreateCardanoTransferTransactionDto) {
     return this.cryptumService.createCardanoTransferTransaction(body);
   }
+  @Post('transfer/solana')
+  createSolanaTransferTransaction(@Body() body: CreateSolanaTransferTransactionDto) {
+    return this.cryptumService.createSolanaTransferTransaction(body);
+  }
   @Post('smartcontract/call')
   callSmartContractMethod(@Body() body: CallSmartContractDto) {
     return this.cryptumService.callSmartContractMethod(body);
@@ -109,5 +116,17 @@ export class TransactionController {
   @Post('token/melt-hathor')
   createHathorMeltTokenTransaction(@Body() body: CreateHathorMeltTokenTransaction) {
     return this.cryptumService.createHathorMeltTokenTransaction(body);
+  }
+  @Post('token/deploy-solana')
+  createSolanaTokenDeployTransaction(@Body() body: CreateSolanaTokenDeployTransaction) {
+    return this.cryptumService.createSolanaTokenDeployTransaction(body);
+  }
+  @Post('token/mint-solana')
+  createSolanaTokenMintTransaction(@Body() body: CreateSolanaTokenMintTransaction) {
+    return this.cryptumService.createSolanaTokenMintTransaction(body);
+  }
+  @Post('token/burn-solana')
+  createSolanaTokenBurnTransaction(@Body() body: CreateSolanaTokenMintTransaction) {
+    return this.cryptumService.createSolanaTokenBurnTransaction(body);
   }
 }

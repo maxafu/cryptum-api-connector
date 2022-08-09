@@ -3,7 +3,7 @@ import { Config } from 'cryptum-sdk';
 export default {
   port: () => parseInt(process.env.PORT, 10) || 8000,
   cryptumConfig: (): Config => ({
-    environment: process.env.NODE_ENV || 'development',
+    environment: process.env.CRYPTUM_ENVIRONMENT === 'mainnet' ? 'mainnet' : 'testnet',
     apiKey: process.env.CRYPTUM_API_KEY,
   }),
   localPath: () => process.env.LOCAL_PATH,
