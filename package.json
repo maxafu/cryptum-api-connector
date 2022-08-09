@@ -1,6 +1,6 @@
 {
   "name": "cryptum-api-connector",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "title": "Cryptum API Connector",
   "description": "Cryptum API Connector",
   "author": "Blockforce",
@@ -41,7 +41,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "crypto-js": "^4.1.1",
-    "cryptum-sdk": "0.0.30",
+    "cryptum-sdk": "0.0.31",
     "dotenv": "^10.0.0",
     "fastify": "^3.22.1",
     "fastify-swagger": "^4.12.6",
