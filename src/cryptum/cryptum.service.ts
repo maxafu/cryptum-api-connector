@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import CryptumSdk from 'cryptum-sdk/dist/index';
+import CryptumSdk from 'cryptum-sdk';
 import { Block, GetBlockDto } from '../block/dto/get-block.dto';
 import { Prices } from '../prices/dto/get-prices.dto';
 import { GetTransactionByHashDto } from '../transaction/dto/get-transaction.dto';
