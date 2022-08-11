@@ -195,6 +195,40 @@ export class CryptumService {
       fee,
     } as EthereumTransferTransactionInput);
   }
+  async createPolygonTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<SignedTransaction> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { privateKey, tokenSymbol, contractAddress, amount, destination, fee } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol: Protocol.POLYGON,
+      privateKey,
+    });
+    return txController.createPolygonTransferTransaction({
+      wallet,
+      tokenSymbol,
+      contractAddress,
+      amount,
+      destination,
+      fee,
+    } as EthereumTransferTransactionInput);
+  }
+  async createAvaxCChainTransferTransaction(input: CreateEthereumTransferTransactionDto): Promise<SignedTransaction> {
+    const txController = this.sdk.getTransactionController();
+    const walletController = this.sdk.getWalletController();
+    const { privateKey, tokenSymbol, contractAddress, amount, destination, fee } = input;
+    const wallet = await walletController.generateWalletFromPrivateKey({
+      protocol: Protocol.AVAXCCHAIN,
+      privateKey,
+    });
+    return txController.createAvaxCChainTransferTransaction({
+      wallet,
+      tokenSymbol,
+      contractAddress,
+      amount,
+      destination,
+      fee,
+    } as EthereumTransferTransactionInput);
+  }
   async createBitcoinTransferTransaction(input: CreateBitcoinTransferTransactionDto): Promise<SignedTransaction> {
     const txController = this.sdk.getTransactionController();
     const walletController = this.sdk.getWalletController();

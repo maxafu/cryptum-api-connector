@@ -77,6 +77,14 @@ export class TransactionController {
   createBscTransferTransaction(@Body() body: CreateEthereumTransferTransactionDto) {
     return this.cryptumService.createBscTransferTransaction(body);
   }
+  @Post('transfer/polygon')
+  createPolygonTransferTransaction(@Body() body: CreateEthereumTransferTransactionDto) {
+    return this.cryptumService.createPolygonTransferTransaction(body);
+  }
+  @Post('transfer/avalanche')
+  createAvaxCChainTransferTransaction(@Body() body: CreateEthereumTransferTransactionDto) {
+    return this.cryptumService.createAvaxCChainTransferTransaction(body);
+  }
   @Post('transfer/hathor')
   createHathorTransferTransaction(@Body() body: CreateHathorTransferTransactionDto) {
     return this.cryptumService.createHathorTransferTransaction(body);
