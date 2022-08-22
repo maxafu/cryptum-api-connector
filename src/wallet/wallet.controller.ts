@@ -17,7 +17,8 @@ export class WalletController {
   async generateWallet(@Body() generateWalletDto: GenerateWalletDto): Promise<Wallet> {
     const wallet = await this.cryptumService.generateWallet(generateWalletDto);
     if (config.saveWallets) {
-      const storedWallet = await storeWallet(wallet as any);
+      const storedWallet = await storeWallet(wallet);
+      delete storedWallet.wallet.privateKey;
       return { id: storedWallet.id, ...storedWallet.wallet };
     }
     return wallet as Wallet;
