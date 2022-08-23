@@ -11,6 +11,7 @@ export class GetWalletInfoQueryStringDto {
   @ApiProperty({
     isArray: true,
     default: [],
+    required: false,
   })
   @Transform(({ value }) => {
     if (typeof value === 'string') {

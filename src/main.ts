@@ -48,9 +48,11 @@ async function bootstrap() {
       },
     },
   );
+
   if (flags.saveWallets) {
     config.saveWallets = true;
     let password = '';
+    console.log('Saving wallets in KMS mode');
     if (flags.azure) {
       config.useAzure = true;
       password = await getAzureKeyVaultSecret(config.azure().secretName);
@@ -58,6 +60,7 @@ async function bootstrap() {
         console.error('Azure Key Vault secret does not exists.');
         return;
       }
+      console.log('Using Azure Key Vault to get secret');
     } else if (flags.aws) {
       config.useAWS = true;
       password = await getAWSSecret(config.aws().secretId);
@@ -65,17 +68,20 @@ async function bootstrap() {
         console.error('AWS secret does not exists.');
         return;
       }
+      console.log('Using AWS Secrets Manager to get secret');
     } else {
       password = config.localPassword();
+      console.log('Using local password');
     }
     config.password = password;
   }
   if (flags.useLocalPath) {
     config.useLocalPath = true;
-  }
-  if (flags.useDb) {
+    console.log('Using local path to save wallets');
+  } else if (flags.useDb) {
     config.useDb = true;
     await db.connect();
+    console.log('Using database to save wallets');
   }
 
   const app = await NestFactory.create<NestFastifyApplication>(
