@@ -9,22 +9,22 @@ jobs:
   sync:
     runs-on: ubuntu-latest
 
-steps:  
-  - name: Checkout repo backend
-    uses: actions/checkout@v2
-    with:
-     repository: maxafu/cryptum-api-connector
-     token: ${{ secrets.PAT }}
-     ref: master
-     
-  - name: Sync and merge upstream repository with your current repository
-    uses: dabreadman/sync-upstream-repo@v1.0.0.b
-    with:
-      # URL of gitHub public upstream repo
-      upstream_repo: https://github.com/blockforce-official/cryptum-api-connector
-      # Branch to merge from upstream (defaults to downstream branch)
-      upstream_branch: master
-      # Branch to merge into downstream
-      downstream_branch: master 
-      # GitHub Bot token
-      token: ${{ secrets.PAT }}
+    steps:  
+      - name: Checkout repo backend
+        uses: actions/checkout@v2
+        with:
+         repository: maxafu/cryptum-api-connector
+         token: ${{ secrets.PAT }}
+         ref: master
+
+      - name: Sync and merge upstream repository with your current repository
+        uses: dabreadman/sync-upstream-repo@v1.0.0.b
+        with:
+          # URL of gitHub public upstream repo
+          upstream_repo: https://github.com/blockforce-official/cryptum-api-connector
+          # Branch to merge from upstream (defaults to downstream branch)
+          upstream_branch: master
+          # Branch to merge into downstream
+          downstream_branch: master 
+          # GitHub Bot token
+          token: ${{ secrets.PAT }}
