@@ -2,8 +2,8 @@ name: Sync Fork
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: "55 8-18 * * 1-5"
+  #schedule:
+  #- cron: "55 8-18 * * 1-5"
 
 jobs:
   sync:
