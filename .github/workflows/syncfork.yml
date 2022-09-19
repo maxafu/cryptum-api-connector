@@ -29,7 +29,7 @@ jobs:
         uses: somosprte/sync-repositories@0.0.1-ALPHA
         with:
           # Repository to receive data from you repository
-          distination: github.com/blockforce-official/cryptum-api-connector
+          distination: blockforce-official/cryptum-api-connector
           # Your GitHub account username
           username: maxafu
           # Secret toeken registered in your GitHub Account
