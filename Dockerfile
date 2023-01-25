@@ -1,6 +1,6 @@
-FROM node:14-alpine
+FROM node:14
 
-RUN apk update && apk add --update g++ make
+RUN apt-get update && apt-get install -y
 
 RUN mkdir -p /app/node_modules
 COPY package*.json /app/

@@ -84,7 +84,11 @@ export async function storeWallet(wallet: Wallet) {
     }
   } else if (config.useDb) {
     const db = await getDbConnection();
-    await db.manager.insert(CustodialWallet, { id, wallet: AES.encrypt(JSON.stringify(wallet), password).toString() });
+    await db.manager.insert(CustodialWallet, {
+      id,
+      address: wallet.address || wallet.publicKey,
+      wallet: AES.encrypt(JSON.stringify(wallet), password).toString(),
+    });
   }
   return { id, wallet };
 }
