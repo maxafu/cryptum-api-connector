@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { WalletController } from './wallet/wallet.controller';
 import { CryptumService } from './cryptum/cryptum.service';
@@ -21,6 +21,12 @@ import { KmsController } from './kms/kms.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes('*');
+    consumer
+      .apply(AuthMiddleware)
+      .exclude({
+        path: 'api/(.*)',
+        method: RequestMethod.ALL,
+      })
+      .forRoutes('*');
   }
 }
