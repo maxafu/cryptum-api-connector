@@ -15,6 +15,9 @@ export class CustodialWallet {
   @Column({ type: 'text', nullable: false })
   wallet: string;
 
+  @Column({ type: 'varchar', nullable: false })
+  protocol: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

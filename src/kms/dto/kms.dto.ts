@@ -1,9 +1,7 @@
-export class Wallet {
-  id?: string;
+export class KmsWallet {
+  id: string;
   xpub?: string;
-  privateKey: string;
-  publicKey: string;
+  publicKey?: string;
   address: string;
   protocol: string;
-  testnet: boolean;
 }

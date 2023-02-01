@@ -12,7 +12,7 @@ API service to facilitate integration with Cryptum SDK and blockchain APIs.
 
 There are a few environment variables you need to configure first and those are placed in `.env-sample` file.
 
-- `CRYPTUM_ENVIRONMENT` - possible values are: `development` or `production`.
+- `CRYPTUM_ENVIRONMENT` - possible values are: `testnet` or `mainnet`.
 - `CRYPTUM_API_KEY` - Cryptum API key that you should create in Cryptum Dashboard.
 - `AUTH_API_KEY` - A chosen api key for intern authorization, if you don't provide it, your instance wont use authorization.
 

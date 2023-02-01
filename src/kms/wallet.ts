@@ -88,6 +88,7 @@ export async function storeWallet(wallet: Wallet) {
       id,
       address: wallet.address || wallet.publicKey,
       wallet: AES.encrypt(JSON.stringify(wallet), password).toString(),
+      protocol: wallet.protocol,
     });
   }
   return { id, wallet };

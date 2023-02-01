@@ -46,13 +46,12 @@ import {
   SmartContractDeployTransactionInput,
   SolanaTransferTransactionInput,
   StellarTransferTransactionInput,
-  TokenDeployTransactionInput,
 } from 'cryptum-sdk/dist/src/features/transaction/entity';
 import config from '../config';
 
 @Injectable()
 export class CryptumService {
-  private sdk: CryptumSdk;
+  sdk: CryptumSdk;
 
   constructor() {
     this.sdk = new CryptumSdk(config.cryptumConfig());
