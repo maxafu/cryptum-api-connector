@@ -7,7 +7,7 @@ export default {
     apiKey: process.env.CRYPTUM_API_KEY,
   }),
   localPath: () => process.env.LOCAL_PATH,
-  localPassword: () => process.env.LOCAL_PASSWORD,
+  localPassword: () => process.env.LOCAL_SECRET,
   dbUrl: () => process.env.DB_URL,
   azure: () => ({
     tenantId: process.env.AZURE_TENANT_ID,
