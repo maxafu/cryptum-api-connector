@@ -22,9 +22,8 @@ async function bootstrap() {
 
       Options
         --saveWallets                     Indicates if it will save generated wallets to a file or database.
-        --useLocalPath                    Indicates if it will use custom path to wallet store file.
+        --useLocalPath                    Indicates if it will use a file to store wallets.
         --useDb                           Indicates if it will use database instance to store wallets.
-        --interval                        Period in seconds to check for new transactions to sign, defaults to 5 seconds. Daemon mode only.
         --aws                             Using AWS (https://aws.amazon.com/secrets-manager/) as a secure storage of the password which unlocks the wallet file.
         --azure                           Using Azure Vault (https://azure.microsoft.com/en-us/services/key-vault/) as a secure storage of the password which unlocks the wallet file.
   `,
