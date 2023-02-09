@@ -21,7 +21,7 @@ export default {
     region: process.env.AWS_REGION,
     accessId: process.env.AWS_ACCESS_ID,
     secretKey: process.env.AWS_SECRET_KEY,
-    secretId: process.env.AWS_SECRET_ID,
+    secretName: process.env.AWS_SECRET_NAME,
   }),
   secret: '',
   saveWallets: false,

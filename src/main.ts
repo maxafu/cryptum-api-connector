@@ -62,7 +62,7 @@ async function bootstrap() {
       console.log('- Using Azure Key Vault to get secret');
     } else if (flags.aws) {
       config.useAWS = true;
-      secret = await getAWSSecret(config.aws().secretId);
+      secret = await getAWSSecret(config.aws().secretName);
       if (!secret) {
         console.error('AWS secret does not exists.');
         return;

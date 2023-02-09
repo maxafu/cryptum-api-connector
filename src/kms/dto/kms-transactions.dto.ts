@@ -1,8 +1,8 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { IsEnum, IsString, IsNotEmpty, IsNumberString, IsOptional } from 'class-validator';
 import { Protocol } from 'cryptum-sdk/dist/src/services/blockchain/constants';
-import { TrustlineProtocol } from 'src/cryptum/interfaces/protocols.interface';
-import { EthFee } from 'src/transaction/dto/create-transaction.dto';
+import { TrustlineProtocol } from '../../cryptum/interfaces/protocols.interface';
+import { EthFee } from '../../transaction/dto/create-transaction.dto';
 
 export class KmsCreateTransactionDto {
   @ApiProperty()
