@@ -24,8 +24,8 @@ async function bootstrap() {
         --saveWallets                     Indicates if it will save generated wallets to a file or database.
         --useLocalPath                    Indicates if it will use a file to store wallets.
         --useDb                           Indicates if it will use database instance to store wallets.
-        --aws                             Using AWS (https://aws.amazon.com/secrets-manager/) as a secure storage of the password which unlocks the wallet file.
-        --azure                           Using Azure Vault (https://azure.microsoft.com/en-us/services/key-vault/) as a secure storage of the password which unlocks the wallet file.
+        --aws                             Using AWS (https://aws.amazon.com/secrets-manager/) as a secure storage of the secret which unlocks the wallet file.
+        --azure                           Using Azure Vault (https://azure.microsoft.com/en-us/services/key-vault/) as a secure storage of the secret which unlocks the wallet file.
   `,
     {
       flags: {
@@ -50,29 +50,29 @@ async function bootstrap() {
 
   if (flags.saveWallets) {
     config.saveWallets = true;
-    let password = '';
+    let secret = '';
     console.log('- Saving wallets in KMS mode');
     if (flags.azure) {
       config.useAzure = true;
-      password = await getAzureKeyVaultSecret(config.azure().secretName);
-      if (!password) {
+      secret = await getAzureKeyVaultSecret(config.azure().secretName);
+      if (!secret) {
         console.error('Azure Key Vault secret does not exists.');
         return;
       }
       console.log('- Using Azure Key Vault to get secret');
     } else if (flags.aws) {
       config.useAWS = true;
-      password = await getAWSSecret(config.aws().secretId);
-      if (!password) {
+      secret = await getAWSSecret(config.aws().secretId);
+      if (!secret) {
         console.error('AWS secret does not exists.');
         return;
       }
       console.log('- Using AWS Secrets Manager to get secret');
     } else {
-      password = config.localPassword();
-      console.log('- Using local password');
+      secret = config.localSecret();
+      console.log('- Using local secret');
     }
-    config.password = password;
+    config.secret = secret;
   }
   if (flags.useLocalPath) {
     config.useLocalPath = true;

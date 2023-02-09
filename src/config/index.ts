@@ -7,7 +7,7 @@ export default {
     apiKey: process.env.CRYPTUM_API_KEY,
   }),
   localPath: () => process.env.LOCAL_PATH,
-  localPassword: () => process.env.LOCAL_SECRET,
+  localSecret: () => process.env.LOCAL_SECRET,
   dbUrl: () => process.env.DB_URL,
   azure: () => ({
     tenantId: process.env.AZURE_TENANT_ID,
@@ -23,7 +23,7 @@ export default {
     secretKey: process.env.AWS_SECRET_KEY,
     secretId: process.env.AWS_SECRET_ID,
   }),
-  password: '',
+  secret: '',
   saveWallets: false,
   useLocalPath: false,
   useDb: false,

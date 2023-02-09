@@ -15,7 +15,7 @@ const ensurePathExists = (path: string) => {
   }
 };
 
-export async function getManagedWalletFromPendingTransaction(transaction: WalletTransaction, password: string) {
+export async function getManagedWalletFromPendingTransaction(transaction: WalletTransaction, secret: string) {
   const sdk = new CryptumSDK(config.cryptumConfig());
   if (transaction.walletId) {
     const walletPath = config.localPath();
@@ -31,12 +31,12 @@ export async function getManagedWalletFromPendingTransaction(transaction: Wallet
 
       let wallet: Wallet;
       try {
-        wallet = JSON.parse(AES.decrypt(data, password).toString(enc.Utf8));
+        wallet = JSON.parse(AES.decrypt(data, secret).toString(enc.Utf8));
         if (!wallet[transaction.walletId]) {
           throw new Error(`No such wallet id '${transaction.walletId}'`);
         }
       } catch (e) {
-        throw new Error(`Wrong password`);
+        throw new Error(`Wrong secret`);
       }
       return await sdk.wallet.generateWalletFromPrivateKey({
         privateKey: wallet[transaction.walletId].privateKey,
@@ -47,12 +47,12 @@ export async function getManagedWalletFromPendingTransaction(transaction: Wallet
       const encryptedWallet = await db.manager.findOne(CustodialWallet, { where: { id: transaction.walletId } });
       let wallet: Wallet;
       try {
-        wallet = JSON.parse(AES.decrypt(encryptedWallet.wallet, password).toString(enc.Utf8));
+        wallet = JSON.parse(AES.decrypt(encryptedWallet.wallet, secret).toString(enc.Utf8));
         if (!wallet) {
           throw new Error(`No such wallet id '${transaction.walletId}'`);
         }
       } catch (e) {
-        throw new Error(`Wrong password`);
+        throw new Error(`Wrong secret`);
       }
       return await sdk.wallet.generateWalletFromPrivateKey({
         privateKey: wallet.privateKey,
@@ -65,7 +65,7 @@ export async function getManagedWalletFromPendingTransaction(transaction: Wallet
 }
 
 export async function storeWallet(wallet: Wallet) {
-  const password = config.password;
+  const secret = config.secret;
   const id = uuid.v4();
   const entry = { [id]: wallet };
 
@@ -73,21 +73,21 @@ export async function storeWallet(wallet: Wallet) {
     const pathToWallet = config.localPath();
     if (!existsSync(pathToWallet)) {
       ensurePathExists(pathToWallet);
-      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(entry), password).toString());
+      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(entry), secret).toString());
     } else {
       const data = readFileSync(pathToWallet, { encoding: 'utf8' });
       let walletData = entry;
       if (data?.length > 0) {
-        walletData = { ...walletData, ...JSON.parse(AES.decrypt(data, password).toString(enc.Utf8)) };
+        walletData = { ...walletData, ...JSON.parse(AES.decrypt(data, secret).toString(enc.Utf8)) };
       }
-      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(walletData), password).toString());
+      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(walletData), secret).toString());
     }
   } else if (config.useDb) {
     const db = await getDbConnection();
     await db.manager.insert(CustodialWallet, {
       id,
       address: wallet.address || wallet.publicKey,
-      wallet: AES.encrypt(JSON.stringify(wallet), password).toString(),
+      wallet: AES.encrypt(JSON.stringify(wallet), secret).toString(),
       protocol: wallet.protocol,
     });
   }
