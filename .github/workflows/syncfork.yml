@@ -31,5 +31,7 @@ jobs:
           unset GLOBIGNORE
           ls
           rsync -av --progress /home/runner/work/cryptum-api-connector/cryptum-api-connector/blockforce //home/runner/work/cryptum-api-connector/cryptum-api-connector/maxafu --exclude '.git'
+          git add .
+          git commit -m "update repo"
           
         
