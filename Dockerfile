@@ -1,15 +1,16 @@
-FROM node:14-alpine
+FROM node:16 AS builder
 
-RUN apk update && apk add --update g++ make
+WORKDIR /app
+RUN apt-get update && apt-get install -y
 
 RUN mkdir -p /app/node_modules
-COPY package*.json /app/
+COPY package.json /app/
 
 # app infra repo
-WORKDIR /app
 RUN npm install
 COPY . ./
 RUN npm run build
 
 EXPOSE 8080
-CMD PORT=8080 npm run start
+
+ENTRYPOINT ["node", "/app/dist/main.js"]

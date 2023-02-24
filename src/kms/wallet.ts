@@ -15,42 +15,57 @@ const ensurePathExists = (path: string) => {
   }
 };
 
-export async function getManagedWalletFromPendingTransaction(transaction: WalletTransaction, password: string) {
+export async function getManagedWalletFromPendingTransaction(transaction: WalletTransaction, secret: string) {
   const sdk = new CryptumSDK(config.cryptumConfig());
-  if (transaction.inputs && transaction.inputs.length > 0) {
-    // TODO
-    return [new Wallet({ address: '', protocol: transaction.protocol, publicKey: '', privateKey: '', testnet: true })];
-  } else if (transaction.walletId) {
+  if (transaction.walletId) {
     const walletPath = config.localPath();
     if (config.useLocalPath) {
       if (!existsSync(walletPath)) {
         throw new Error(`No such wallet id '${transaction.walletId}'`);
       }
-    }
-    const data = readFileSync(walletPath, { encoding: 'utf8' });
-    if (!data?.length) {
-      throw new Error(`No such wallet id '${transaction.walletId}'`);
-    }
-    let wallet;
-    try {
-      wallet = JSON.parse(AES.decrypt(data, password).toString(enc.Utf8));
-      if (!wallet[transaction.walletId]) {
+
+      const data = readFileSync(walletPath, { encoding: 'utf8' });
+      if (!data?.length) {
         throw new Error(`No such wallet id '${transaction.walletId}'`);
       }
-    } catch (e) {
-      throw new Error(`Wrong password`);
+
+      let wallet: Wallet;
+      try {
+        wallet = JSON.parse(AES.decrypt(data, secret).toString(enc.Utf8));
+        if (!wallet[transaction.walletId]) {
+          throw new Error(`No such wallet id '${transaction.walletId}'`);
+        }
+      } catch (e) {
+        throw new Error(`Wrong secret`);
+      }
+      return await sdk.wallet.generateWalletFromPrivateKey({
+        privateKey: wallet[transaction.walletId].privateKey,
+        protocol: transaction.protocol,
+      });
+    } else if (config.useDb) {
+      const db = await getDbConnection();
+      const encryptedWallet = await db.manager.findOne(CustodialWallet, { where: { id: transaction.walletId } });
+      let wallet: Wallet;
+      try {
+        wallet = JSON.parse(AES.decrypt(encryptedWallet.wallet, secret).toString(enc.Utf8));
+        if (!wallet) {
+          throw new Error(`No such wallet id '${transaction.walletId}'`);
+        }
+      } catch (e) {
+        throw new Error(`Wrong secret`);
+      }
+      return await sdk.wallet.generateWalletFromPrivateKey({
+        privateKey: wallet.privateKey,
+        protocol: transaction.protocol,
+      });
     }
-    return await sdk.getWalletController().generateWalletFromPrivateKey({
-      privateKey: wallet[transaction.walletId].privateKey,
-      protocol: transaction.protocol,
-    });
   } else {
     return null;
   }
 }
 
 export async function storeWallet(wallet: Wallet) {
-  const password = config.password;
+  const secret = config.secret;
   const id = uuid.v4();
   const entry = { [id]: wallet };
 
@@ -58,19 +73,23 @@ export async function storeWallet(wallet: Wallet) {
     const pathToWallet = config.localPath();
     if (!existsSync(pathToWallet)) {
       ensurePathExists(pathToWallet);
-      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(entry), password).toString());
+      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(entry), secret).toString());
     } else {
       const data = readFileSync(pathToWallet, { encoding: 'utf8' });
       let walletData = entry;
       if (data?.length > 0) {
-        walletData = { ...walletData, ...JSON.parse(AES.decrypt(data, password).toString(enc.Utf8)) };
+        walletData = { ...walletData, ...JSON.parse(AES.decrypt(data, secret).toString(enc.Utf8)) };
       }
-      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(walletData), password).toString());
+      writeFileSync(pathToWallet, AES.encrypt(JSON.stringify(walletData), secret).toString());
     }
-  }
-  if (config.useDb) {
+  } else if (config.useDb) {
     const db = await getDbConnection();
-    await db.manager.insert(CustodialWallet, { id, wallet: AES.encrypt(JSON.stringify(wallet), password).toString() });
+    await db.manager.insert(CustodialWallet, {
+      id,
+      address: wallet.address || wallet.publicKey,
+      wallet: AES.encrypt(JSON.stringify(wallet), secret).toString(),
+      protocol: wallet.protocol,
+    });
   }
   return { id, wallet };
 }

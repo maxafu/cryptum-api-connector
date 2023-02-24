@@ -1,14 +1,14 @@
 {
   "name": "cryptum-api-connector",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "title": "Cryptum API Connector",
   "description": "Cryptum API Connector",
-  "author": "Blockforce",
+  "author": "Victor Municelli Dário, victor@cryptum.io",
   "private": true,
   "main": "dist/main.js",
   "license": "MIT",
   "engines": {
-    "node": "^14.x.x"
+    "node": "^16.x.x"
   },
   "bin": {
     "cryptum-api-connector": "dist/main.js"
@@ -19,13 +19,12 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start": "node dist/main",
+    "start": "NODE_ENV=production node dist/main.js",
     "build-start": "npm run build && node dist/main.js --saveWallets --useDb --azure",
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
@@ -41,7 +40,7 @@
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "crypto-js": "^4.1.1",
-    "cryptum-sdk": "^0.0.33",
+    "cryptum-sdk": "0.0.45",
     "dotenv": "^10.0.0",
     "fastify": "^3.22.1",
     "fastify-swagger": "^4.12.6",

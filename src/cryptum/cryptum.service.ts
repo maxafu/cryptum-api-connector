@@ -34,7 +34,7 @@ import {
   CreateHathorTokenDeployTransaction,
   CreateSolanaTokenDeployTransaction,
   CreateSolanaTokenMintTransaction,
-  CreateSolanaTokenBurnTransaction
+  CreateSolanaTokenBurnTransaction,
 } from '../transaction/dto/token-transaction.dto';
 import {
   BitcoinTransferTransactionInput,
@@ -46,13 +46,12 @@ import {
   SmartContractDeployTransactionInput,
   SolanaTransferTransactionInput,
   StellarTransferTransactionInput,
-  TokenDeployTransactionInput,
 } from 'cryptum-sdk/dist/src/features/transaction/entity';
 import config from '../config';
 
 @Injectable()
 export class CryptumService {
-  private sdk: CryptumSdk;
+  sdk: CryptumSdk;
 
   constructor() {
     this.sdk = new CryptumSdk(config.cryptumConfig());
@@ -297,7 +296,7 @@ export class CryptumService {
       protocol: Protocol.SOLANA,
       privateKey,
     });
-    wallet.publicKey = wallet.address
+    wallet.publicKey = wallet.address;
     return txController.createSolanaTransferTransaction({
       wallet,
       token,
@@ -307,7 +306,7 @@ export class CryptumService {
   }
   async callSmartContractMethod(input: CallSmartContractDto): Promise<CallSmartContractResponse> {
     const { from, protocol, contractAbi, method, params, contractAddress } = input;
-    const contractController = this.sdk.getContractController()
+    const contractController = this.sdk.getContractController();
     return contractController.callMethod({
       from,
       contractAbi,
@@ -429,18 +428,16 @@ export class CryptumService {
     });
   }
   async createSolanaTokenDeployTransaction(input: CreateSolanaTokenDeployTransaction): Promise<{
-    mint: string,
-    metadata: any,
-    transaction: SignedTransaction
+    mint: string;
+    metadata: any;
+    transaction: SignedTransaction;
   }> {
-    const txController = this.sdk.getTransactionController();
-    const walletController = this.sdk.getWalletController();
     const { privateKey, tokenName, tokenSymbol, amount, fixedSupply, decimals } = input;
-    const wallet = await walletController.generateWalletFromPrivateKey({
+    const wallet = await this.sdk.wallet.generateWalletFromPrivateKey({
       protocol: Protocol.SOLANA,
       privateKey,
     });
-    return txController.createSolanaTokenDeployTransaction({
+    return this.sdk.transaction.createSolanaTokenDeployTransaction({
       wallet,
       name: tokenName,
       symbol: tokenSymbol,

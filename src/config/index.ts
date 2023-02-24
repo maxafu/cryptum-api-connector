@@ -1,13 +1,13 @@
 import { Config } from 'cryptum-sdk';
 
 export default {
-  port: () => parseInt(process.env.PORT, 10) || 8000,
+  port: () => parseInt(process.env.PORT, 10) || 8080,
   cryptumConfig: (): Config => ({
     environment: process.env.CRYPTUM_ENVIRONMENT === 'mainnet' ? 'mainnet' : 'testnet',
     apiKey: process.env.CRYPTUM_API_KEY,
   }),
   localPath: () => process.env.LOCAL_PATH,
-  localPassword: () => process.env.LOCAL_PASSWORD,
+  localSecret: () => process.env.LOCAL_SECRET,
   dbUrl: () => process.env.DB_URL,
   azure: () => ({
     tenantId: process.env.AZURE_TENANT_ID,
@@ -21,9 +21,9 @@ export default {
     region: process.env.AWS_REGION,
     accessId: process.env.AWS_ACCESS_ID,
     secretKey: process.env.AWS_SECRET_KEY,
-    secretId: process.env.AWS_SECRET_ID,
+    secretName: process.env.AWS_SECRET_NAME,
   }),
-  password: '',
+  secret: '',
   saveWallets: false,
   useLocalPath: false,
   useDb: false,
