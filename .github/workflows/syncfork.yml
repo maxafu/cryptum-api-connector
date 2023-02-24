@@ -26,7 +26,7 @@ jobs:
       - name: git-bash
         run: |    
           cd '/home/runner/work/cryptum-api-connector/cryptum-api-connector/maxafu'
-          rm -R ! .git
+          rm -R !(*.git)
           ls
           rsync -av --progress $GITHUB_WORKSPACE/blockforce-official/cryptum-api-connector /$GITHUB_WORKSPACE/maxafu/cryptum-api-connector --exclude '.git'
           
