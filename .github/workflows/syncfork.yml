@@ -30,6 +30,6 @@ jobs:
           rm -R *
           unset GLOBIGNORE
           ls
-          rsync -av --progress $GITHUB_WORKSPACE/blockforce-official/cryptum-api-connector /$GITHUB_WORKSPACE/maxafu/cryptum-api-connector --exclude '.git'
+          rsync -av --progress /home/runner/work/cryptum-api-connector/cryptum-api-connector/blockforce //home/runner/work/cryptum-api-connector/cryptum-api-connector/maxafu --exclude '.git'
           
         
