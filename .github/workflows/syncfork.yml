@@ -24,9 +24,7 @@ jobs:
           path: 'blockforce'
           
       - name: git-bash
-        # You may pin to the exact commit or the version.
-        # uses: pkg-src/github-action-git-bash@d7e3f57b86fcf5d919a5ba685d459583735b7611
-        uses: pkg-src/github-action-git-bash@v1.0    
+        run: |    
           cd '$GITHUB_WORKSPACE/maxafu/cryptum-api-connector'
           rm -R !(.git)
           ls
