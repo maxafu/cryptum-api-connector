@@ -31,6 +31,8 @@ jobs:
           unset GLOBIGNORE
           ls
           rsync -av --progress /home/runner/work/cryptum-api-connector/cryptum-api-connector/blockforce //home/runner/work/cryptum-api-connector/cryptum-api-connector/maxafu --exclude '.git'
+          git config --global user.email "max@ucorp.app"
+          git config --global user.name "Max Fernandes"
           git add .
           git commit -m "update repo"
           
